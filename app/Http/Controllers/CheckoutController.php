@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
-use Illuminate\Http\Request;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use MercurySeries\Flashy\Flashy;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class CheckoutController extends Controller
 {
@@ -17,11 +18,19 @@ class CheckoutController extends Controller
      */
     public function index()
     {
+        if (Cart::count() <= 0) {
+            Flashy::error('Le panier est vide.');
+            return redirect()->route('products.index');
+        }
+
         Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
 
         $intent = PaymentIntent::create([
             'amount' => round(Cart::total()),
-            'currency' => 'eur'
+            'currency' => 'eur',
+            'metadata' => [
+                'userId' => 15
+            ]
         ]);
 
         $clientSecret = Arr::get($intent, 'client_secret');
@@ -49,7 +58,10 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Cart::destroy();
+        $data = $request->json()->all();
+
+        return $data['paymentIntent'];
     }
 
     /**
