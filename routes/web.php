@@ -32,3 +32,6 @@ Route::get('/videpanier', function () {
     Cart::destroy();
     return redirect()->back();
 });
+
+// Checkout Routes
+Route::get('/paiement', 'CheckoutController@index')->name('checkout.index');
