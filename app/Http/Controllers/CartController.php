@@ -6,6 +6,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use MercurySeries\Flashy\Flashy;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -76,9 +77,24 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $rowId)
     {
-        //
+        $data = $request->json()->all();
+
+        $Validator = Validator::make($request->all(), [
+            'qty' => 'required|numeric|between:1,6'
+        ]);
+
+        if($Validator->fails()){
+            Flashy::error('La quantité du produit doit être entre 1 et 6.');
+            return response()->json(['error' => 'Cart Quantity Has Not Been Updated']);
+        }
+
+        Cart::update($rowId, $data['qty']);
+
+        Flashy::message('La quantité du produit a bien été modifiée.');
+
+        return response()->json(['success' => 'Cart Quantity Has Been Updated']);
     }
 
     /**

@@ -93,7 +93,7 @@
                                 headers: {
                                     "Content-Type": "application/json",
                                     "Accept": "application/json, text-plain, */*",
-                                    "X-Rquested-with": "XMLHttpRequest",
+                                    "X-Requested-with": "XMLHttpRequest",
                                     "X-CSRF-TOKEN": token
                                 },
                                 method: 'post',

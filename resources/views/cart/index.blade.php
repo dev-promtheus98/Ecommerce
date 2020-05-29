@@ -1,5 +1,9 @@
 @extends('layouts.master')
 
+@section('extra-meta')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('content')
     @if (Cart::count() > 0)
         <div class="px-4 px-lg-0">
@@ -41,8 +45,14 @@
                                                         </div>
                                                     </div>
                                                 </th>
-                                                <td class="border-0 align-middle"><strong>{{ $product->model->getPrice() }}</strong></td>
-                                                <td class="border-0 align-middle"><strong>{{ $product->qty }}</strong></td>
+                                                <td class="border-0 align-middle"><strong>{{ getPrice($product->subtotal()) }}</strong></td>
+                                                <td class="border-0 align-middle">
+                                                    <select name="qty" id="qty" data-id="{{ $product->rowId }}" class="form-control">
+                                                        @for ($i = 1; $i <= 6; $i++)
+                                                            <option value="{{ $i }}" {{ $i == $product->qty ? 'selected' : '' }}>{{ $i }}</option>
+                                                        @endfor
+                                                    </select>
+                                                </td>
                                                 <td class="border-0 align-middle">
                                                     <form action="{{ route('cart.destroy', $product->rowId) }}" method="post">
                                                         @csrf
@@ -111,4 +121,35 @@
             <p>Votre panier est vide.</p>
         </div>
     @endif
+@endsection
+
+@section('extra-js')
+    <script>
+        var selects = document.querySelectorAll('#qty');
+        Array.from(selects).forEach((element) => {
+            element.addEventListener('change', function () {
+                var rowId = this.getAttribute('data-id');
+                var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                fetch(
+                    `/panier/${rowId}`,
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json, text-plain, */*",
+                            "X-Requested-with": "XMLHttpRequest",
+                            "X-CSRF-TOKEN": token
+                        },
+                        method: 'PATCH',
+                        body: JSON.stringify({
+                            qty: this.value
+                        })
+                    }).then((data) => {
+                        console.log(data)
+                        window.location.reload(true)
+                }).catch((error) => {
+                    console.log(error)
+                })
+            })
+        })
+    </script>
 @endsection
