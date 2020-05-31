@@ -38,3 +38,8 @@ Route::get('/videpanier', function () {
 Route::get('/paiement', 'CheckoutController@index')->name('checkout.index');
 Route::post('/paiement', 'CheckoutController@store')->name('checkout.store');
 Route::get('/merci', 'CheckoutController@thankYou')->name('checkout.thankYou');
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});

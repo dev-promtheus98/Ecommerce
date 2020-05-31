@@ -7,7 +7,7 @@
             <strong class="d-inline-block mb-2 text-success">Design</strong>
             <h5 class="mb-0">{{ $product->title }}</h5>
             <div class="mb-1 text-muted">{{ $product->created_at->format('d/m/Y') }}</div>
-            <p class="card-text mb-auto">{{ $product->description }}</p>
+            <p class="card-text mb-auto">{!! $product->description !!}</p>
             <strong class="card-text mb-auto">{{ $product->getPrice() }}</strong>
             <form action="{{ route('cart.store') }}" method="post">
                 @csrf
@@ -16,7 +16,7 @@
             </form>
         </div>
         <div class="col-auto d-none d-lg-block">
-            <img src="{{ $product->image }}" alt="">
+            <img src="{{ asset('storage/'. $product->image) }}" alt="">
         </div>
     </div>
 </div>

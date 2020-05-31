@@ -14,10 +14,10 @@
                 <div class="mb-1 text-muted">{{ $product->created_at->format('d/m/Y') }}</div>
                 <p class="card-text mb-auto">{{ $product->subtitle }}</p>
                 <strong class="card-text mb-auto">{{ $product->getPrice() }}</strong>
-                <a href="{{ route('products.show', $product->slug) }}" class="stretched-link btn btn-info">Voir l'article</a>
+                <a href="{{ route('products.show', $product->slug) }}" class="stretched-link btn btn-info">Consulter le produit</a>
             </div>
             <div class="col-auto d-none d-lg-block">
-                <img src="{{ $product->image }}" alt="">
+                <img src="{{ asset('storage/'. $product->image) }}" alt="">
             </div>
         </div>
     </div>
