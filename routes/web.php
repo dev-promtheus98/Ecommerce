@@ -1,5 +1,6 @@
 <?php
 
+use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Facades\Route;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -22,6 +23,7 @@ Route::get('/', function () {
 
 Route::get('/boutique', 'ProductController@index')->name('products.index');
 Route::get('/boutique/{slug}', 'ProductController@show')->name('products.show');
+Route::get('/search', 'ProductController@search')->name('products.search');
 
 // Cart Routes
 Route::get('/panier', 'CartController@index')->name('cart.index');
