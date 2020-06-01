@@ -15,6 +15,7 @@
         "hardevine/shoppingcart": "^2.8",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0",
         "mercuryseries/flashy": "^1.0",
         "stripe/stripe-php": "^7.36",
         "tcg/voyager": "^1.4"
