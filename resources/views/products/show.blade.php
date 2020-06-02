@@ -16,8 +16,29 @@
             </form>
         </div>
         <div class="col-auto d-none d-lg-block">
-            <img src="{{ asset('storage/'. $product->image) }}" alt="">
+            <img src="{{ asset('storage/'. $product->image) }}" width="210" height="190" id="mainimage">
+            <div class="mt-2">
+                @if ($product->images)
+                    <img src="{{ asset('storage/'. $product->image) }}" width="50" class="img-thumbnail" alt="">
+                    @foreach (json_decode($product->images, true) as $image)
+                        <img src="{{ asset('storage/'. $image) }}" width="50" class="img-thumbnail" alt="">
+                    @endforeach
+                @endif
+            </div>
         </div>
     </div>
 </div>
 @endSection
+
+@section('extra-js')
+    <script>
+        var mainimage = document.querySelector('#mainimage');
+        var thumbnails = document.querySelectorAll('.img-thumbnail');
+
+        thumbnails.forEach((element) => element.addEventListener('click', changeImage));
+
+        function changeImage(e){
+            mainimage.src = this.src;
+        }
+    </script>
+@endsection
