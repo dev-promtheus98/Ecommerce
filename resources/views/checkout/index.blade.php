@@ -85,7 +85,6 @@
                         var paymentIntent = result.paymentIntent;
                         var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                         var url = form.action;
-                        var redirect = '/merci';
 
                         fetch(
                             url,
@@ -101,8 +100,13 @@
                                     paymentIntent: paymentIntent
                                 })
                             }).then((data) => {
-                            console.log(data)
-                            window.location.href = redirect;
+                                if (data.status === 400) {
+                                    var redirect = '/boutique';
+                                }else{
+                                    var redirect = '/merci';
+                                }
+                                console.log(data);
+                                window.location.href = redirect;
                         }).catch((error) => {
                             console.log(error)
                         })

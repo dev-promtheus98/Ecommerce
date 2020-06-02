@@ -90,6 +90,11 @@ class CartController extends Controller
             return response()->json(['error' => 'Cart Quantity Has Not Been Updated']);
         }
 
+        if ($data['qty'] > $data['stock']) {
+            Flashy::error('La quantité de ce produit n\'est pas disponible.');
+            return response()->json(['error' => 'Product Quantity Not Available']);
+        }
+
         Cart::update($rowId, $data['qty']);
 
         Flashy::message('La quantité du produit a bien été modifiée.');
